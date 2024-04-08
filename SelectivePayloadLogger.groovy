@@ -5,7 +5,6 @@
 * If you want to know more about the SCRIPT APIs, refer the link below
 * https://help.sap.com/doc/a56f52e1a58e4e2bac7f7adbf45b2e26/Cloud/en-US/index.html 
 */
-
 import com.sap.gateway.ip.core.customdev.util.Message;
 import java.util.HashMap;
 
@@ -35,9 +34,9 @@ def Message processData(Message message) {
      *  mappingMessage: The log message to use for the post-mapping payload
      */
     HashMap<String, String> payloadLoggingConfig = [
-        inputEnabled:  properties.get("InPayloadLOG"), 
+        inputEnabled:  properties.get("InputPayloadLog"), 
         inputMessage:  "InputPayload",
-        errorEnabled:  properties.get("InputPayloadOnError"),
+        errorEnabled:  properties.get("InputPayloadLogOnError"),
         errorMessage:  "onErrorInputPayload",
         mappingEnabled: properties.get("AfterMappingPayload"),
         mappingMessage:  "afterMappingInputPayload"
@@ -45,15 +44,10 @@ def Message processData(Message message) {
 
     // Determine if logging should be performed
     if (isLoggingEnabled(payloadLoggingConfig)) {
-        try {
-            def messageLog = messageLogFactory.getMessageLog(message);
-            if (messageLog != null) {
-                String logMessage = getLogMessage(payloadLoggingConfig);
-                messageLog.addAttachmentAsString(logMessage, body, "text/xml"); 
-            }
-        } catch (Exception e) {
-            // Log the exception for debugging
-            System.err.println("Error during payload logging: " + e.getMessage()); 
+        def messageLog = messageLogFactory.getMessageLog(message);
+        if (messageLog != null) {
+            String logMessage = getLogMessage(payloadLoggingConfig);
+            messageLog.addAttachmentAsString(logMessage, body, "text/xml"); 
         }
     }
 
