@@ -13,7 +13,7 @@ import java.util.HashMap;
  * It offers configuration options to log the input payload, payload after mapping, and 
  * payload in case of errors.
  *
- * @author Aman Anand/CPI
+ * @author Aman Anand
  * @version 1.0 
  */
 
